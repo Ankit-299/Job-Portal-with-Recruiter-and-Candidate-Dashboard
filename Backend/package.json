@@ -1,0 +1,33 @@
+{
+  "name": "job-portal-with-recruiter-and-candidate-dashboard",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ankit-299/Job-Portal-with-Recruiter-and-Candidate-Dashboard.git"
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ankit-299/Job-Portal-with-Recruiter-and-Candidate-Dashboard/issues"
+  },
+  "homepage": "https://github.com/Ankit-299/Job-Portal-with-Recruiter-and-Candidate-Dashboard#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+ 
+}
