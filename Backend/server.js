@@ -2,11 +2,14 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from"./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import { protect } from "./middleware/authMiddleware.js";
+import jobRoutes from "./routes/jobRoutes.js";
+import { protect,authorizeRoles } from "./middleware/authMiddleware.js";
 const app = express();
 app.use(express.json());
 
+
 // Use routes
+app.use("/api/jobs", jobRoutes);
 app.use("/api/auth", authRoutes);
 dotenv.config();
 
@@ -27,3 +30,19 @@ app.get("/api/test", protect, (req, res) => {
     user: req.user,
   });
 });
+app.get(
+  "/api/recruiter-only",
+  protect,
+  authorizeRoles("recruiter"),
+  (req, res) => {
+    res.json({ message: "Welcome Recruiter!" });
+  }
+);
+app.get(
+  "/api/candidate-only",
+  protect,
+  authorizeRoles("candidate"),
+  (req, res) => {
+    res.json({ message: "Welcome Candidate!" });
+  }
+);

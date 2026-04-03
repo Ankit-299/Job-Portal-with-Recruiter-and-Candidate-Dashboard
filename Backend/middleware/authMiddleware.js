@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const protect = (req, res, next) => {
+
   try {
     let token;
 
@@ -25,4 +26,16 @@ export const protect = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ message: "Token failed" });
   }
+};
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    // Check if user's role is allowed
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: "Access denied: insufficient permissions",
+      });
+    }
+
+    next();
+  };
 };
