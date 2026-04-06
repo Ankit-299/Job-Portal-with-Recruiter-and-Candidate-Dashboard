@@ -12,7 +12,10 @@ export const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+     return res.status(400).json({
+     success: false,
+     message: "User already exists",
+});
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -25,15 +28,18 @@ export const registerUser = async (req, res) => {
       role,
     });
 
-    res.status(201).json({
-      message: "User registered successfully",
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
+  res.status(201).json({
+   success: true,
+  message: "User registered successfully",
+  data: {
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  },
+});
 
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -45,7 +51,7 @@ import jwt from "jsonwebtoken";
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("Login attempt:", email, password);
     // 1. Validate
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -53,13 +59,16 @@ export const loginUser = async (req, res) => {
 
     // 2. Check user exists
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
+      console.log("User found not :", user);
     }
 
+    console.log("User found:", user);
+    
     // 3. Compare password
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("password match:", isMatch, "provided:", password, "stored:", user.password);
 
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
