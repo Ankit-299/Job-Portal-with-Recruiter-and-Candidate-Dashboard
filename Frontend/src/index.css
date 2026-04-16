@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Full height fix */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+/* Body */
+body {
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Headings */
+h1, h2 {
+  font-weight: 600;
+}
+
+/* Button */
+button {
+  cursor: pointer;
+}
+
+/* 🔥 Custom Input (light theme) */
+.darkInput {
+  @apply w-full p-3 rounded-lg bg-white border border-gray-300 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0992C2];
+}
+
+.label {
+  @apply block text-sm font-medium text-[#0B2D72] mb-1;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #0992C2;
+  box-shadow: 0 0 0 2px rgba(9,146,194,0.2);
+}
