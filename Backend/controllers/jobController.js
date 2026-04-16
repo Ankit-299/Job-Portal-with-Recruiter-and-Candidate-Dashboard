@@ -21,14 +21,28 @@ export const createJob = async (req, res) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "Job created successfully",
-      job,
+      data: job,
     });
 
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// Get jobs created by current recruiter
+export const getMyJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find({ createdBy: req.user.id })
+      .populate("applicants", "name email")
+      .sort({ createdAt: -1 });
+    
+    res.status(200).json({ success: true, message: "Success", data: jobs });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Get all jobs (Public)
 export const getAllJobs = async (req, res) => {
   try {
@@ -64,15 +78,19 @@ export const getAllJobs = async (req, res) => {
 
     const totalJobs = await Job.countDocuments(query);
 
-    res.json({
-      totalJobs,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalJobs / limit),
-      jobs,
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      data: {
+        totalJobs,
+        currentPage: Number(page),
+        totalPages: Math.ceil(totalJobs / limit),
+        jobs,
+      }
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -96,9 +114,63 @@ export const deleteJob = async (req, res) => {
 
     await job.deleteOne();
 
-    res.json({ message: "Job deleted successfully" });
+    res.status(200).json({ success: true, message: "Job deleted successfully", data: {} });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get single job by ID (Public)
+export const getJobById = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+
+    const job = await Job.findById(jobId)
+      .populate("createdBy", "name email company");
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get similar jobs based on title, skills, or category
+export const getSimilarJobs = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    
+    const currentJob = await Job.findById(jobId);
+    
+    if (!currentJob) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    // Find jobs with similar title or same department
+    const similarJobs = await Job.find({
+      _id: { $ne: jobId },
+      isOpen: true,
+      $or: [
+        { title: { $regex: currentJob.title.split(" ")[0], $options: "i" } },
+        { department: currentJob.department },
+        { requiredSkills: { $in: currentJob.requiredSkills || [] } }
+      ]
+    })
+    .limit(5)
+    .populate("createdBy", "name company");
+
+    res.status(200).json({
+      success: true,
+      data: similarJobs,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

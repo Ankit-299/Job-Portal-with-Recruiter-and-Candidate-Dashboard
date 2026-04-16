@@ -19,6 +19,43 @@ const applicationSchema = new mongoose.Schema(
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
+
+    // Application details
+    coverLetter: {
+      type: String,
+    },
+
+    phone: {
+      type: String,
+    },
+
+    currentLocation: {
+      type: String,
+    },
+
+    yearsOfExperience: {
+      type: String,
+    },
+
+    expectedSalary: {
+      type: String,
+    },
+
+    availableNoticePeriod: {
+      type: String,
+    },
+
+    // Recruiter notes on this application
+    recruiterNotes: {
+      type: String,
+      default: "",
+    },
+
+    // Shortlisted flag
+    isShortlisted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
