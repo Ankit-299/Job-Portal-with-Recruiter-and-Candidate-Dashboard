@@ -25,18 +25,18 @@ function ManageJobs() {
     } catch (error) { alert(error.response?.data?.message || "Failed"); }
   };
 
-  const filtered = jobs.filter(j =>
+  const filtered = jobs?.filter(j =>
     !search ||
     j.title?.toLowerCase().includes(search.toLowerCase()) ||
     j.company?.toLowerCase().includes(search.toLowerCase()) ||
     j.createdBy?.name?.toLowerCase().includes(search.toLowerCase())
-  );
+  ) ?? [];
 
   return (
     <DashboardLayout>
       <div style={{ marginBottom: "28px" }}>
         <h1 style={{ fontSize: "22px", fontWeight: "700", color: "#F0EDEA", margin: "0 0 4px" }}>Manage Jobs</h1>
-        <p style={{ fontSize: "14px", color: "rgba(240,237,234,0.4)", margin: 0 }}>{jobs.length} total postings</p>
+        <p style={{ fontSize: "14px", color: "rgba(240,237,234,0.4)", margin: 0 }}>{jobs?.length ?? 0} total postings</p>
       </div>
 
       <div style={{ marginBottom: "20px" }}>

@@ -41,14 +41,14 @@ function ManageUsers() {
   };
 
   const filtered = users
-    .filter(u => filter === "all" || u.role === filter)
-    .filter(u => !search || u.name?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase()));
+    ?.filter(u => filter === "all" || u.role === filter)
+    ?.filter(u => !search || u.name?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase())) ?? [];
 
   return (
     <DashboardLayout>
       <div style={{ marginBottom: "28px" }}>
         <h1 style={{ fontSize: "22px", fontWeight: "700", color: "#F0EDEA", margin: "0 0 4px" }}>Manage Users</h1>
-        <p style={{ fontSize: "14px", color: "rgba(240,237,234,0.4)", margin: 0 }}>{users.length} registered users</p>
+        <p style={{ fontSize: "14px", color: "rgba(240,237,234,0.4)", margin: 0 }}>{users?.length || 0} registered users</p>
       </div>
 
       {/* Controls */}
@@ -63,7 +63,7 @@ function ManageUsers() {
           }}
         />
         {["all", "candidate", "recruiter"].map(f => {
-          const count = f === "all" ? users.length : users.filter(u => u.role === f).length;
+          const count = f === "all" ? users?.length ?? 0 : users?.filter(u => u.role === f).length ?? 0;
           const isActive = filter === f;
           return (
             <button key={f} onClick={() => setFilter(f)} style={{

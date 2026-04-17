@@ -33,20 +33,24 @@ export const getRecruiterStats = async (req, res) => {
         const jobs = await Job.find({ createdBy: recruiter._id });
 
         return {
+          _id: recruiter._id,
           recruiterName: recruiter.name,
           email: recruiter.email,
+          company: recruiter.company,
+          isVerified: recruiter.isVerified,
+          isBlocked: recruiter.isBlocked,
           totalJobsPosted: jobs.length,
-          totalApplicants: jobs.reduce(
+          totalApplicants: jobs.length > 0 ? jobs.reduce(
             (acc, job) => acc + job.applicants.length,
-            
-          ),
+          ) : 0,
         };
       })
     );
 
-    res.json(stats);
+    res.status(200).json({ success: true, data: stats });
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 // 4. Block/Unblock user

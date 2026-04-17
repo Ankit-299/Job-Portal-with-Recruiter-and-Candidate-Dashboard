@@ -34,20 +34,20 @@ function AdminAnalytics() {
 
   const getTopRecruiters = () => {
     return recruiters
-      .sort((a, b) => b.totalJobsPosted - a.totalJobsPosted)
-      .slice(0, 5);
+      ?.sort((a, b) => b.totalJobsPosted - a.totalJobsPosted)
+      ?.slice(0, 5) ?? [];
   };
 
   const getTopJobs = () => {
     return jobs
-      .sort((a, b) => (b.applicants?.length || 0) - (a.applicants?.length || 0))
-      .slice(0, 5);
+      ?.sort((a, b) => (b.applicants?.length || 0) - (a.applicants?.length || 0))
+      ?.slice(0, 5) ?? [];
   };
 
   const getAverageApplicants = () => {
-    if (jobs.length === 0) return 0;
-    const total = jobs.reduce((acc, job) => acc + (job.applicants?.length || 0), 0);
-    return Math.round(total / jobs.length);
+    if (jobs?.length ?? 0 === 0) return 0;
+    const total = jobs?.reduce((acc, job) => acc + (job.applicants?.length || 0), 0) ?? 0;
+    return Math.round(total / (jobs?.length ?? 0));
   };
 
   if (loading) {

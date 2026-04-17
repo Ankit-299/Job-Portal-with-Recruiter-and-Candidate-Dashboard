@@ -11,7 +11,7 @@ function Applications() {
 
   useEffect(() => {
     axiosInstance.get("/applications/my-applications")
-      .then(res => setApplications(res.data.data))
+      .then(res => setApplications(res.data || []))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);

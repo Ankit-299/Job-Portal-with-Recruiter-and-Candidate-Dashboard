@@ -24,11 +24,11 @@ function AdminDashboard() {
       setStats(statsRes.data.data);
       
       // Get pending recruiters
-      const pending = recruitersRes.data.data.filter(r => !r.isVerified);
+      const pending = recruitersRes?.data?.data?.filter(r => !r.isVerified) || [];
       setPendingRecruiters(pending.slice(0, 5));
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);
-      alert("Failed to fetch dashboard data");
+      // alert("Failed to fetch dashboard data");
     } finally {
       setLoading(false);
     }

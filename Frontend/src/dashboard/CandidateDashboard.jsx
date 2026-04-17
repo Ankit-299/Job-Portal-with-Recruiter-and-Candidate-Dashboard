@@ -19,7 +19,7 @@ function CandidateDashboard() {
           axiosInstance.get("/applications/my-applications"),
           axiosInstance.get("/jobs"),
         ]);
-        setApplications(appsRes.data.data);
+        setApplications(appsRes.data ?? []);
         setJobs(jobsRes.data.data.jobs || []);
       } catch (error) {
         console.error(error);
@@ -45,9 +45,9 @@ function CandidateDashboard() {
     alert("Application submitted successfully! 🎉");
   };
 
-  const totalApplied = applications.length;
-  const interviews = applications.filter(a => a.status === "interview").length;
-  const offers = applications.filter(a => a.status === "accepted").length;
+  const totalApplied = applications?.length ?? 0;
+  const interviews = applications?.filter(a => a.status === "interview").length ?? 0;
+  const offers = applications?.filter(a => a.status === "accepted").length ?? 0 ;
 
   const statusStyle = (s) => ({
     accepted: { bg: "rgba(16,185,129,0.1)", color: "#10B981", border: "rgba(16,185,129,0.2)" },
@@ -107,8 +107,8 @@ function CandidateDashboard() {
                   <p style={{ textAlign: "center", color: "rgba(240,237,234,0.3)", padding: "40px 0", fontSize: "14px" }}>No jobs available right now</p>
                 ) : (
                   <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    {jobs.map((job) => {
-                      const hasApplied = applications.some(a => a.job?._id === job._id || a.job === job._id);
+                    {(jobs ?? []).map((job) => {
+                      const hasApplied = (applications ?? []).some(a => a.job?._id === job._id || a.job === job._id);
                       return (
                         <div key={job._id} style={{
                           display: "flex", justifyContent: "space-between", alignItems: "center",

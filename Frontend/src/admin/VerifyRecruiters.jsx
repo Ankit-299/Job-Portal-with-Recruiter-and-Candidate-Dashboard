@@ -47,8 +47,8 @@ function VerifyRecruiters() {
   const filteredRecruiters = filter === "all"
     ? recruiters
     : filter === "pending"
-    ? recruiters.filter(r => !r.isVerified)
-    : recruiters.filter(r => r.isVerified);
+    ? recruiters?.filter(r => !r.isVerified) ?? []
+    : recruiters?.filter(r => r.isVerified === true) ?? [];
 
   const statusConfig = {
     verified: { bg: "rgba(16,185,129,0.1)", color: "#10B981", border: "rgba(16,185,129,0.2)", label: "Verified ✓" },
@@ -66,10 +66,10 @@ function VerifyRecruiters() {
       {/* Filter Buttons */}
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
         {[
-          { key: "pending", label: "Pending", count: recruiters.filter(r => !r.isVerified).length, accent: "#F59E0B" },
-          { key: "verified", label: "Verified", count: recruiters.filter(r => r.isVerified).length, accent: "#10B981" },
-          { key: "all", label: "All", count: recruiters.length, accent: "#4F8EF7" },
-        ].map((btn) => (
+          { key: "pending", label: "Pending", count: recruiters?.filter(r => !r.isVerified).length ?? 0, accent: "#F59E0B" },
+          { key: "verified", label: "Verified", count: recruiters?.filter(r => r.isVerified === true).length ?? 0, accent: "#10B981" },
+          { key: "all", label: "All", count: recruiters?.length ?? 0, accent: "#4F8EF7" },
+        ]?.map((btn) => (
           <button
             key={btn.key}
             onClick={() => setFilter(btn.key)}
@@ -95,7 +95,7 @@ function VerifyRecruiters() {
         <div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}>
           <div style={{ width: "36px", height: "36px", border: "2px solid rgba(79,142,247,0.2)", borderTopColor: "#4F8EF7", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
         </div>
-      ) : filteredRecruiters.length === 0 ? (
+      ) : (filteredRecruiters?.length ?? 0) === 0 ? (
         <div style={{
           background: "rgba(255,255,255,0.03)",
           border: "1px solid rgba(255,255,255,0.07)",
@@ -162,7 +162,7 @@ function VerifyRecruiters() {
                       {statusConfig.verified.label}
                     </span>
                   )}
-                  {!recruiter.isVerified && (
+                {(recruiter.isVerified === false || recruiter.isVerified === undefined || recruiter.isVerified === null) && (
                     <span style={{
                       padding: "5px 12px",
                       borderRadius: "100px",

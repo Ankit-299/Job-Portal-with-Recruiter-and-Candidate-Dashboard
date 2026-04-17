@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, AlertTriangle, Info, UserPlus } from "lucide-react";
+import { AlertTriangle, Info, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 
@@ -16,7 +16,9 @@ function Navbar() {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    fetchNotifications();
+    if (user?.role === "admin") {
+      fetchNotifications();
+    }
   }, []);
 
   const fetchNotifications = async () => {
