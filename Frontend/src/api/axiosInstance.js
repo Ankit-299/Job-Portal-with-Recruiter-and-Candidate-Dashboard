@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://job-portal-with-recruiter-and-candidate.onrender.com/api",
 });
 
 // Request interceptor to attach JWT token

@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const baseUrl = "http://localhost:5000/";
+    const baseUrl = "https://job-portal-with-recruiter-and-candidate.onrender.com/";
     const resumePath = req.files?.resume ? baseUrl + req.files.resume[0].path.replace(/\\/g, "/") : null;
     const companyProofPath = req.files?.companyProof ? baseUrl + req.files.companyProof[0].path.replace(/\\/g, "/") : null;
 
